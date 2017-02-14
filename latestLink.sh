@@ -23,20 +23,25 @@ fi
 
 #Finds latest modified file
 latest=`find $1 -type f | xargs ls -tr | tail -1`
+
 #date format YYYY-MM-DD-HH-MM-SS
 now=`date +"%Y-%m-%d-%H-%M-%S"`
+
+#change to suit naming-convention
 filename="backup-$now"
 
 #echo commands are for testing, delete/comment before putting into production
 if [ -d "$2" ]; then
-    echo "Directory exists. Removing. $2 "
+    echo "Directory exists. Removing $2."
     rm -r $2
-    echo "Directory removed. Creating. $2/$filename"
+    echo "Directory removed. Creating $2/$filename."
     mkdir $2
+    #use with or without -f(force), add -v(verbose)for debugging
     ln -sf $latest $2/$filename
 else
-    echo "Directory does not exist. Creating Directory. $2."
+    echo "Directory does not exist. Creating $2/$filename."
     mkdir $2
+    #use with or without -f(force), add -v(verbose)for debugging
     ln -sf $latest $2/$filename
 fi
 exit 0
