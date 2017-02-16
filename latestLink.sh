@@ -10,14 +10,14 @@
 
 #This section checks that the correct number of args are entered
 if [ $# == 0 ]; then
-    printf 'No arguments given, 3 expected.\n' >&2;
+    printf 'No arguments given, 3 expected $# given.\n' >&2;
     printf 'Usage: arg1 = path/to/file, arg2 = directoryName\n' >&2;
     exit 1;
 elif [ $# -lt 3 ]; then
-    printf 'Not enough arguments given, 3 expected.\n' >&2;
+    printf 'Not enough arguments given, 3 expected $# given.\n' >&2;
     exit 1;
 elif [ $# -gt 3 ]; then
-    printf 'Too many arguments given, 3 expected.\n' >&2;
+    printf 'Too many arguments given, 3 expected $# given.\n' >&2;
     exit 1;
 fi
 
