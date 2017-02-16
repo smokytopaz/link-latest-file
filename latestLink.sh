@@ -1,5 +1,7 @@
 #!/bin/bash
 
+#Making big cahnges here
+
 #latestLink is used to limit the amount of files backed up daily 
 #on an external backup server.  The program creates a new directory,
 #targets the latest modified file in the specified path, and creates
@@ -25,7 +27,7 @@ fi
 latest=`find $1 -type f | xargs ls -tr | tail -1`
 
 #date format YYYY-MM-DD-HH-MM-SS
-now=`date +"%Y-%m-%d-%H-%M-%S"`
+now=`date +"%Y-%m-%d-%H-%M"`
 
 #change to suit naming-convention
 filename="backup-$now"
