@@ -32,7 +32,7 @@ system=$3
 
 #change to suit naming-convention
 filename="$system-backup-$now"
-oldFile=`find $dir -type l -name ''$system'-backup-*'`
+oldFile="$(find "$dir" -type l -name ''"$system"'-backup-*')"
 dir=$2
 getFiles=(`ls $dir`)
 
