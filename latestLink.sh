@@ -10,14 +10,14 @@
 
 #This section checks that the correct number of args are entered
 if [ $# == 0 ]; then
-    printf 'No arguments given, 3 expected $# given.\n' >&2;
+    printf 'No arguments given, 3 expected '$#' given.\n' >&2;
     printf 'Usage: arg1 = path/to/file, arg2 = directoryName\n' >&2;
     exit 1;
 elif [ $# -lt 3 ]; then
-    printf 'Not enough arguments given, 3 expected $# given.\n' >&2;
+    printf 'Not enough arguments given, 3 expected '$#' given.\n' >&2;
     exit 1;
 elif [ $# -gt 3 ]; then
-    printf 'Too many arguments given, 3 expected $# given.\n' >&2;
+    printf 'Too many arguments given, 3 expected '$#' given.\n' >&2;
     exit 1;
 fi
 
@@ -25,59 +25,74 @@ fi
 latest=`find $1 -type f | xargs ls -tr | tail -1`
 
 #date format YYYY-MM-DD-HH-MM-SS
-now=`date +"%Y-%m-%d-%H-%M"`
+now=`date +"%Y-%m-%d-%H-%M-%S"`
 
 #unique name of system
 system=$3
 
 #change to suit naming-convention
 filename="$system-backup-$now"
-oldFile=`find $dir -type f -name "$system-backup-*" -mmin +1300`
+oldFile=`find $dir -type l -name ''$system'-backup-*'`
 dir=$2
 getFiles=(`ls $dir`)
 
+echo $1
+echo $dir
+echo $oldFile
 if [ -d "$2" ]; then
     for i in "${getFiles[@]}"
     do
-        if [ "$filename" !-eq "$oldFile" ] && [ -L $dir/$i ]; then
-            rm $oldFile
-            ln -sf $latest $2/$filename
-            printf 'removed $oldFile, added symlink to $latest' >> latest.log
+        if [ "$filename" != "$oldFile" ] && [ -L $dir/$i ]; then
+            echo "rm $oldFile"
+            #rm $oldFile
+            echo "create symlink"
+            #ln -sf $latest $2/$filename
+            printf ''$now'  removed '$oldFile', added symlink to '$latest'\n\n' >> latest.log
         elif [ ! -L $dir/$i ]; then
-            printf '$i is not a symlink, consider cleaning up directory' >> latest.log &2
-            ln -sf $latest $2/$filename
-        elif [ "$filename" -eq "$oldFile" ] && [ -L $dir/$i ]; then
-            rm $oldFile
-            ln -sf $latest $2/$filename
-            printf 'File names match, $removed oldFile, added symlink to $latest' >> latest.log &2
+            printf ''$now'  '$i' is not a symlink, consider cleaning up directory\n\n' >> latest.log &2
+            echo "create symlink"
+            #ln -sf $latest $2/$filename
+        elif [ "$filename" == "$oldFile" ] && [ -L $dir/$i ]; then
+            echo "remove $oldFile"
+            #rm $oldFile
+            echo "create symlink"
+            #ln -sf $latest $2/$filename
+            printf ''$now'  File names match, removed '$oldFile', added symlink to '$latest'\n\n' >> latest.log &2
         else
-           ln -sf $latest $2/$filename
-           printf 'something else happened, added symlink to $latest' >> latest.log &2
+            echo "create symlink"
+            #ln -sf $latest $2/$filename
+           printf ''$now'  something else happened, added symlink to '$latest'\n\n' >> latest.log &2
         fi
     done
 else
-    mkdir $2
-    printf 'directory $2 created' >> latest.log
+    echo "mkdir $2"
+    #mkdir $2
+    printf ''$now'  directory '$2' created\n\n' >> latest.log
     for i in "${getFiles[@]}"
     do
         if [ "$filename" !-eq "$oldFile" ] && [ -L $dir/$i ]; then
-            rm $oldFile
-            ln -sf $latest $2/$filename
-            printf 'removed $oldFile, added symlink to $latest' >> latest.log
+            echo "rm $oldFile"
+            #rm $oldFile
+            echo "create symlink"
+            #ln -sf $latest $2/$filename
+            printf ''$now'  removed '$oldFile', added symlink to '$latest'\n\n' >> latest.log
         elif [ ! -L $dir/$i ]; then
-            printf '$i is not a symlink, consider cleaning up directory' >> latest.log &2
-            ln -sf $latest $2/$filename
+            printf ''$now'  '$i' is not a symlink, consider cleaning up directory\n\n' >> latest.log &2
+            echo "create symlink"
+            #ln -sf $latest $2/$filename
         elif [ "$filename" -eq "$oldFile" ] && [ -L $dir/$i ]; then
-            rm $oldFile
-            ln -sf $latest $2/$filename
-            printf 'File names match, $removed oldFile, added symlink to $latest' >> latest.log &2
+            echo "rm $oldFile"
+            #rm $oldFile
+            echo "create symlink"
+            #ln -sf $latest $2/$filename
+            printf ''$now'  File names match, removed '$oldFile', added symlink to '$latest'\n\n' >> latest.log &2
         else
-           ln -sf $latest $2/$filename
-           printf 'something else happened, added symlink to $latest' >> latest.log &2
+           echo "create symlink"
+           #ln -sf $latest $2/$filename
+           printf ''$now'  something else happened, added symlink to '$latest'\n\n' >> latest.log &2
         fi
     done
 fi
-
 
 
 #echo commands are for testing, delete/comment before putting into production
