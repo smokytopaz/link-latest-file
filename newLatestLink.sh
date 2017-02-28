@@ -3,30 +3,35 @@
 function link(){
 
 $(argTest $1 $2 $3)
-if [ "$argTest" = 1 ]; then
-    printf 'Failed argTest\n' >&2;
-    exit 1;
+
+argResult=$(argTest)
+echo $argResult
+
+if [ "$argResult" == 1 ]; then
+    echo $argResult
+    printf 'Failed argTest\n' >&2
+    exit 1
 else
-   echo "hi there you"
+    echo $argResult
+    echo "hi there you"
 fi
 
 }
 
-
 function argTest(){
 
 if [ $# == 0 ]; then
-    printf 'No arguments given, 3 expected '$#' given.\n' >&2;
-    printf 'Usage: arg1 = path/to/file, arg2 = directory name, arg3 = system name\n' >&2;
-    return 1;
+    printf 'No arguments given, 3 expected '$#' given.\n' >&2
+    printf 'Usage: arg1 = path/to/file, arg2 = directory name, arg3 = system name\n' >&2
+    return=1
 elif [ $# -lt 3 ]; then
-    printf 'Not enough arguments given, 3 expected '$#' given.\n' >&2;
-    return 1;
+    printf 'Not enough arguments given, 3 expected '$#' given.\n' >&2
+    return=1
 elif [ $# -gt 3 ]; then
-    printf 'Too many arguments given, 3 expected '$#' given.\n' >&2;
-    return 1;
+    printf 'Too many arguments given, 3 expected '$#' given.\n' >&2
+    return=1
 else
-    return 0;
+    return=0
 fi
 
 }
@@ -57,7 +62,4 @@ fi
 
 }
 
-
-
-
-link hi hithere
+link hi hitherei
