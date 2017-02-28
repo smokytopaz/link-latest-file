@@ -11,6 +11,28 @@ fi
 
 echo "next step"
 
+#Finds the latest modified file
+latest=`find $1 -type f | xargs ls -tr | tail -1`
+
+#Date format YYYY-MM-DD-HH-MM-SS
+now=`date +"%Y-%m-%d-%H-%M-%S"`
+
+#Unique name of the system
+system=$3
+
+#Change to suit naming convention
+filename="$system-backup-$now"
+oldFile="$(find "$dir" -type l -name ''"$system"'-backup-*')"
+dir=$2
+getFiles=(`ls $dir`)
+
+if [ -d "$2" ]; then 
+    for i in "${getFiles[@]}"
+    do
+        $(symLink)
+    done
+fi
+
 }
 
 function argTest(){
@@ -57,4 +79,4 @@ fi
 
 }
 
-main hi hitherei
+main $1 $2 $3
