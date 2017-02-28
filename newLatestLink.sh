@@ -1,20 +1,15 @@
 #!/bin/bash
 
-function link(){
+function main(){
 
 $(argTest $1 $2 $3)
 
-argResult=$(argTest)
-echo $argResult
-
-if [ "$argResult" == 1 ]; then
-    echo $argResult
-    printf 'Failed argTest\n' >&2
+if [ $? == 1 ]; then
+#   printf 'Failed argTest\n\n' >> latest.log &2
     exit 1
-else
-    echo $argResult
-    echo "hi there you"
 fi
+
+echo "next step"
 
 }
 
@@ -23,15 +18,15 @@ function argTest(){
 if [ $# == 0 ]; then
     printf 'No arguments given, 3 expected '$#' given.\n' >&2
     printf 'Usage: arg1 = path/to/file, arg2 = directory name, arg3 = system name\n' >&2
-    return=1
+    exit 1
 elif [ $# -lt 3 ]; then
     printf 'Not enough arguments given, 3 expected '$#' given.\n' >&2
-    return=1
+    exit 1
 elif [ $# -gt 3 ]; then
     printf 'Too many arguments given, 3 expected '$#' given.\n' >&2
-    return=1
+    exit 1
 else
-    return=0
+    exit 0
 fi
 
 }
@@ -62,4 +57,4 @@ fi
 
 }
 
-link hi hitherei
+main hi hitherei
