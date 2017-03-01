@@ -29,7 +29,7 @@ getFiles=(`ls $dir`)
 if [ -d "$2" ]; then 
     for i in "${getFiles[@]}"
     do
-        $(symLink)
+        $(symLink $filename $latest $oldFile $dir $now)
     done
 fi
 
@@ -55,26 +55,26 @@ fi
 
 function symLink(){
 
-if [ "$filename" != "$oldFile" ] && [ -L $dir/$i ]; then
-    echo "rm $oldFile"
+if [ "$1" != "$3" ] && [ -L $4/$i ]; then
+    echo "rm $3"
     #rm $oldFile
     echo "create symlink"
     #ln -sf $latest $2/$filename
-    printf ''$now'  removed '$oldFile', added symlink to '$latest'\n\n' >> latest.log
-elif [ ! -L $dir/$i ]; then
-    printf ''$now'  '$i' is not a symlink, consider cleaning up directory\n\n' >> latest.log &2
+    printf ''$5'  removed '$3', added symlink to '$2'\n\n' >> latest.log
+elif [ ! -L $4/$i ]; then
+    printf ''$5'  '$i' is not a symlink, consider cleaning up directory\n\n' >> latest.log &2
     echo "create symlink"
     #ln -sf $latest $2/$filename
-elif [ "$filename" == "$oldFile" ] && [ -L $dir/$i ]; then
-    echo "remove $oldFile"
+elif [ "$1" == "$oldFile" ] && [ -L $4/$i ]; then
+    echo "remove $3"
     #rm $oldFile
     echo "create symlink"
     #ln -sf $latest $2/$filename
-    printf ''$now'  File names match, removed '$oldFile', added symlink to '$latest'\n\n' >> latest.log &2
+    printf ''$5'  File names match, removed '$3', added symlink to '$2'\n\n' >> latest.log &2
 else
     echo "create symlink"
     #ln -sf $latest $2/$filename
-    printf ''$now'  something else happened, added symlink to '$latest'\n\n' >> latest.log &2
+    printf ''$5'  something else happened, added symlink to '$2'\n\n' >> latest.log &2
 fi
 
 }
