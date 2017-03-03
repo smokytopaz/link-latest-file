@@ -1,11 +1,5 @@
 #!/bin/bash
 
-#latestLink is used to limit the amount of files backed up daily 
-#on an external backup server.  The program creates a new directory,
-#targets the latest modified file in the specified path, and creates
-#a symbolic link in the new directory.  On the next run it will delete
-#the directory and complete the process again.
-
 #Usage latestLink.sh path/to/file newestDir
 
 #This section checks that the correct number of args are entered
