@@ -1,4 +1,10 @@
 #!/bin/bash
+
+symLink ()
+{
+echo "HI"
+}
+
 now=`date +"%Y-%m-%d-%H:%M:%S"`
 path=$1
 dir=$2
@@ -8,6 +14,7 @@ latest=`find $path | xargs ls -tr | tail -1`
 oldFile="$(/usr/bin/find "$dir" -name ''"$system"'-backup-*')"
 getFiles=(`ls $dir`)
 a=0
+
 
 echo "0 now $now"
 echo "1 path $path"
@@ -27,18 +34,21 @@ if [ -d "$dir" ]; then
     done
 fi
 
-function symLink(){
+#symLink ()
+#{
+#
+#echo "hi"
+#
+#echo "0 now $now"
+#echo "1 path $path"
+#echo "2 dir $dir"
+#echo "3 system $system"
+#echo "4 filename $filename"
+#echo "5 latest $latest"
+#echo "6 oldFile $oldFile"
+#echo "7 getFiles $getFiles"
+#}
 
-echo "hi"
-
-echo "0 now $now"
-echo "1 path $path"
-echo "2 dir $dir"
-echo "3 system $system"
-echo "4 filename $filename"
-echo "5 latest $latest"
-echo "6 oldFile $oldFile"
-echo "7 getFiles $getFiles"
 
 #if [ "$filename" != "$oldFile" ] && [ -L $dir/$i ]; then
 #    echo "rm $oldFile"
@@ -56,4 +66,4 @@ echo "7 getFiles $getFiles"
 #    echo "$now  something else happened, added symlink to $latest" >> latest.log &2
 #fi
 
-}
+

@@ -1,40 +1,5 @@
 #!/bin/bash
 
-function main(){
-
-$(argTest $1 $2 $3)
-
-if [ $? == 1 ]; then
-#   printf 'Failed argTest\n\n' >> latest.log &2
-    exit 1
-fi
-
-echo "next step"
-
-#Finds the latest modified file
-latest=`/usr/bin/find $1 | xargs ls -tr | tail -1`
-
-#Date format YYYY-MM-DD-HH-MM-SS
-now=`date +"%Y-%m-%d-%H-%M-%S"`
-
-#Unique name of the system
-system=$3
-
-#Change to suit naming convention
-filename="$system-backup-$now"
-oldFile="$(/usr/bin/find "$dir" -name ''"$system"'-backup-*')"
-dir=$2
-getFiles=(`ls $dir`)
-
-if [ -d "$2" ]; then 
-    for i in "${getFiles[@]}"
-    do
-       symLink
-    done
-fi
-
-}
-
 argTest ()
 {
 
@@ -51,14 +16,13 @@ elif [ $# -gt 3 ]; then
 else
     exit 0
 fi
-
 }
 
 symLink ()
 {
 
 if [ "$filename" != "$oldFile" ] && [ -L $dir/$i ]; then
-    echo "rm $oldFile"
+    echo "remove $oldFile"
     #rm $oldFile
     echo "create symlink"
     #ln -sf $latest $2/$filename
@@ -78,7 +42,40 @@ else
     #ln -sf $latest $2/$filename
     printf ''$now'  something else happened, added symlink to '$latest'\n\n' >> latest.log &2
 fi
+}
 
+main ()
+{
+    $(argTest $1 $2 $3)
+
+if [ $? == 1 ]; then
+   printf 'Failed argTest\n\n' >> latest.log &2
+    exit 1
+fi
+
+echo "next step"
+
+#Finds the latest modified file
+latest=$(/usr/bin/find $1 | xargs ls -tr | tail -1)
+
+#Date format YYYY-MM-DD-HH-MM-SS
+now=`date +"%Y-%m-%d-%H-%M-%S"`
+
+#Unique name of the system
+system=$3
+
+#Change to suit naming convention
+filename="$system-backup-$now"
+oldFile=$(/usr/bin/find "$dir" -name ''$system'-backup-*')
+dir=$2
+getFiles=(`ls $dir`)
+
+if [ -d "$2" ]; then 
+    for i in "${getFiles[@]}"
+        do
+            $(symLink)
+        done
+fi
 }
 
 main $1 $2 $3
